@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reader</title>
+<script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
+<style>
+html,body{margin:0;height:100%;background:#111;color:#eee;font-family:system-ui,sans-serif}
+#viewer{height:100vh}
+#bar{position:fixed;top:0;left:0;right:0;padding:.5rem;display:flex;gap:.5rem;align-items:center;background:rgba(0,0,0,.7);z-index:10}
+button{padding:.4rem .8rem;border:0;border-radius:.4rem;background:#333;color:#fff;cursor:pointer}
+#controls{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);display:flex;gap:.5rem;z-index:10}
+</style>
+</head>
+<body>
+<div id="bar">
+  <button onclick="location.href='index.html'">Library</button>
+  <button id="toc">Contents</button>
+</div>
+<div id="viewer"></div>
+<div id="controls">
+  <button id="prev">Prev</button>
+  <button id="next">Next</button>
+</div>
+<script>
+const params=new URLSearchParams(location.search);
+const src=params.get("src")||params.get("book")||"book.epub";
+let book, rendition;
+function load(s){ if(book) book.destroy(); book=ePub(s); rendition=book.renderTo("viewer",{width:"100%",height:"100%"}); rendition.display(); }
+load(src);
+document.getElementById("prev").onclick=()=>rendition.prev();
+document.getElementById("next").onclick=()=>rendition.next();
+document.getElementById("toc").onclick=async()=>{ const t=await book.loaded.navigation; alert(t.toc.map(x=>x.label).join("\n")); };
+</script>
+</body>
+</html>
