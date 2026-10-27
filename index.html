@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Book Reader</title>
+<script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
+<style>
+html,body{margin:0;height:100%;background:#1a1a1a;color:#eee;font-family:system-ui,sans-serif}
+#viewer{height:100vh}
+#controls{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);display:flex;gap:.5rem;z-index:10}
+button{padding:.5rem 1rem;border:0;border-radius:.5rem;background:#333;color:#fff;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="viewer"></div>
+<div id="controls">
+<button id="prev">Prev</button>
+<button id="next">Next</button>
+</div>
+<script>
+const book = ePub("book.epub");
+const rendition = book.renderTo("viewer", { width: "100%", height: "100%" });
+rendition.display();
+document.getElementById("prev").onclick = () => rendition.prev();
+document.getElementById("next").onclick = () => rendition.next();
+</script>
+</body>
+</html>
